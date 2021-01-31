@@ -3,6 +3,7 @@ use std::path::Path;
 use std::fs::File;
 use std::io::prelude::*;
 use regex::Regex;
+use futures::executor::block_on;
 
 error_chain! {
      foreign_links {
@@ -65,8 +66,7 @@ async fn unzip(content: Vec<u8>, target_path: String) -> Result<()> {
     Ok(())
 }
 
-#[tokio::main]
-async fn main() -> Result<()> {
+async fn flow() -> Result<()> {
     println!("读取准备");
     let json_str = get_config().await?;
 
@@ -82,5 +82,9 @@ async fn main() -> Result<()> {
     let content = download(pid.to_string(), cookie.to_string()).await?;
     unzip(content, path.to_string()).await?;
     Ok(())
+}
+
+fn main() {
+    block_on(flow());
 }
 
