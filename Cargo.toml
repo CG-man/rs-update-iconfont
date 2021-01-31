@@ -8,10 +8,10 @@ edition = "2018"
 
 [dependencies]
 tinyget = { version = "1.0", features = ["https"] }
-tokio = { version = "1", features = ["full"] }
-error-chain = "0.12.4"
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+error-chain = { version = "0.12.4", features = ["backtrace"] }
 json = "0.12.4"
-zip = "0.5"
+zip = { version = "0.5", features = ["deflate"] }
 regex = "1"
 
 [profile.release]
