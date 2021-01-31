@@ -494,7 +494,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "rs-update-icon"
+name = "rs-update-iconfont"
 version = "0.1.0"
 dependencies = [
  "error-chain",

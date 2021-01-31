@@ -1,5 +1,5 @@
 [package]
-name = "rs-update-icon"
+name = "update-iconfont"
 version = "0.1.0"
 authors = ["cg-man"]
 edition = "2018"
