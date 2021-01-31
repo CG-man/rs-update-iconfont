@@ -12,9 +12,9 @@ futures = "0.3"
 error-chain = { version = "0.12.4", features = ["backtrace"] }
 json = "0.12.4"
 zip = { version = "0.5", features = ["deflate"] }
-regex = "1"
 
 [profile.release]
 lto = true
 codegen-units = 1
+opt-level = 'z'
 panic = "abort"

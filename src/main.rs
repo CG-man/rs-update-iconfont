@@ -2,7 +2,6 @@ use error_chain::error_chain;
 use std::path::Path;
 use std::fs::File;
 use std::io::prelude::*;
-use regex::Regex;
 use futures::executor::block_on;
 
 error_chain! {
@@ -43,12 +42,11 @@ async fn download(pid: String, cookie_value: String) -> Result<Vec<u8>> {
 async fn unzip(content: Vec<u8>, target_path: String) -> Result<()> {
     let reader = std::io::Cursor::new(&content);
     let mut zip = zip::ZipArchive::new(reader)?;
-    let re = Regex::new(r"iconfont\.js$").unwrap();
     for i in 0..zip.len()
     {
         let mut file = zip.by_index(i).unwrap();
         println!("Is dir: {}, Filename: {}", file.is_dir(), file.name());
-        if re.is_match(&file.name()) {
+        if file.name().split("/").last().unwrap() == "iconfont.js" {
             println!("需要导出: {}", file.name());
             let mut str = String::from("");
             let usize = file.read_to_string(&mut str).unwrap();
@@ -66,6 +64,7 @@ async fn unzip(content: Vec<u8>, target_path: String) -> Result<()> {
     Ok(())
 }
 
+/// 工作流
 async fn flow() -> Result<()> {
     println!("读取准备");
     let json_str = get_config().await?;
