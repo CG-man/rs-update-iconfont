@@ -7,13 +7,14 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-reqwest = { version = "0.11", features = ["blocking"] }
+tinyget = { version = "1.0", features = ["https"] }
 tokio = { version = "1", features = ["full"] }
 error-chain = "0.12.4"
 json = "0.12.4"
 zip = "0.5"
 regex = "1"
-bytes = "1"
 
 [profile.release]
 lto = true
+codegen-units = 1
+panic = "abort"

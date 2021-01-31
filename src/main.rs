@@ -3,12 +3,11 @@ use std::path::Path;
 use std::fs::File;
 use std::io::prelude::*;
 use regex::Regex;
-use bytes::Bytes;
 
 error_chain! {
      foreign_links {
          Io(std::io::Error);
-         HttpRequest(reqwest::Error);
+         TinyGet(tinyget::Error);
          ZipArchive(zip::result::ZipError);
      }
 }
@@ -24,23 +23,23 @@ async fn get_config() -> Result<String> {
 }
 
 /// 下载压缩包
-async fn download(pid: String, cookie_value: String) -> Result<Bytes> {
+async fn download(pid: String, cookie_value: String) -> Result<Vec<u8>> {
     // 客户端
-    let client = reqwest::Client::new();
     let target = String::from("https://www.iconfont.cn/api/project/download.zip?pid=") + &pid;
     let cookie = String::from("EGG_SESS_ICONFONT=") + &cookie_value;
     println!("开始下载");
-    let response = client.get(&target).header("cookie", &cookie).send().await?;
+    let response = tinyget::get(&target).with_header("cookie", &cookie).send()?;
+
     println!("下载完成");
 
     // 内容
-    let content =  response.bytes().await?;
+    let content =  response.as_bytes();
 
-    Ok(content)
+    Ok(content.to_vec())
 }
 
 /// 解压压缩包
-async fn unzip(content: Bytes, target_path: String) -> Result<()> {
+async fn unzip(content: Vec<u8>, target_path: String) -> Result<()> {
     let reader = std::io::Cursor::new(&content);
     let mut zip = zip::ZipArchive::new(reader)?;
     let re = Regex::new(r"iconfont\.js$").unwrap();
