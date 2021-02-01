@@ -1,3 +1,11 @@
+# update-iconfont
+
+[![Latest version](https://img.shields.io/crates/v/update-iconfont.svg)](https://crates.io/crates/update-iconfont)
+[![Crate](https://img.shields.io/crates/v/update-iconfont.svg)](https://crates.io/crates/update-iconfont)
+![License](https://img.shields.io/crates/l/update-iconfont.svg)
+
+> update the iconfont
+
 # 自动更新 iconfont 的工具
 
 ## 项目根目录下新建 iconfont.json
